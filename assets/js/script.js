@@ -61,16 +61,27 @@ searchBtn.on("click", (event) => {
 
           var fiveDaysHeader = $(`<h4>5-Day Forecast</h4>`);
           forecastFiveDays.append(fiveDaysHeader);
-          for (var i = 0; i < 5; i++) {
+          for (var i = 1; i < 6; i++) {
             var fiveDaysCard = $(`<div class="card col-2">
           <div class="card-body">
             <h6 class="card-title">${dayjs()
-              .add(1, "day")
+              .add(i - 1 + 1, "day")
               .format("DD/MM/YYYY")}</h6>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+              <img src="http://openweathermap.org/img/w/${
+                data.list[i * 8 - 1].weather[0].icon
+              }.png">
+            <p class="card-text">Temp: ${(
+              data.list[i * 8 - 1].main.temp - 273.15
+            ).toFixed(2)} &deg;C</p>
+            <p class="card-text">Wind: ${
+              data.list[i * 8 - 1].wind.speed
+            } KPH</p>
+            <p class="card-text">Humidity: ${
+              data.list[i * 8 - 1].main.humidity
+            }%</p>
           </div>
         </div>`);
+
             forecastFiveDays.append(fiveDaysCard);
           }
         });
