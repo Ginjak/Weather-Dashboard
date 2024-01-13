@@ -3,13 +3,19 @@ var searchInput = $("#search-input");
 var searchBtn = $("#search-button");
 var forcastToday = $("#today");
 var forecastFiveDays = $("#forecast");
+var historySection = $("#history");
+var searchHistoryArr = [];
 var latitude = "";
 var longitude = "";
 
-// var queryURL = `https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}`;
-
 searchBtn.on("click", (event) => {
   event.preventDefault();
+  forcastToday.empty();
+  forecastFiveDays.empty();
+  searchHistoryArr.push(searchInput.val());
+  var historyItem = $(`<li class="list-group-item">${searchHistoryArr}</li>`);
+  historySection.append(historyItem);
+
   var queryUrlCityCordinates = `http://api.openweathermap.org/geo/1.0/direct?q=${searchInput.val()}&limit=5&appid=3c4f418d697258b26a8f47e2024d5b99`;
 
   fetch(queryUrlCityCordinates)
