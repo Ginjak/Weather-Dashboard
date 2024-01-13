@@ -2,6 +2,7 @@
 var searchInput = $("#search-input");
 var searchBtn = $("#search-button");
 var forcastToday = $("#today");
+var forecastFiveDays = $("#forecast");
 var latitude = "";
 var longitude = "";
 
@@ -31,17 +32,11 @@ searchBtn.on("click", (event) => {
         .then((data) => {
           console.log(data);
 
-          // Display city name - console.log(data.city.name);
-          // Temp console.log((data.list[0].main.temp - 273.15).toFixed(2));
-          // Wind console.log(data.list[0].wind.speed);
-          // Humidity console.log(data.list[0].main.humidity);
-          // Icon code console.log(data.list[0].weather[0].icon);
-          // Icon url: http://openweathermap.org/img/w/10d.png
-          // var forcastTodayCity = $(
-          //   `<img src="http://openweathermap.org/img/w/${data.list[0].weather[0].icon}.png">`
-          // );
           var forcastHeading = $(
-            `<h2>${searchInput.val()} ${dayjs().format(
+            `<h2>${
+              searchInput.val().charAt(0).toUpperCase() +
+              searchInput.val().slice(1)
+            } ${dayjs().format(
               "(DD/MM/YYYY)"
             )} <img src="http://openweathermap.org/img/w/${
               data.list[0].weather[0].icon
@@ -52,8 +47,32 @@ searchBtn.on("click", (event) => {
               2
             )} &deg;C</p>`
           );
+          var forcastWind = $(`<p>Wind: ${data.list[0].wind.speed} KPH</p>`);
+          var forcastHumidity = $(
+            `<p>Humidity: ${data.list[0].main.humidity}%</p>`
+          );
 
-          forcastToday.append(forcastHeading, forcastTemp);
+          forcastToday.append(
+            forcastHeading,
+            forcastTemp,
+            forcastWind,
+            forcastHumidity
+          );
+
+          var fiveDaysHeader = $(`<h4>5-Day Forecast</h4>`);
+          forecastFiveDays.append(fiveDaysHeader);
+          for (var i = 0; i < 5; i++) {
+            var fiveDaysCard = $(`<div class="card col-2">
+          <div class="card-body">
+            <h6 class="card-title">${dayjs()
+              .add(1, "day")
+              .format("DD/MM/YYYY")}</h6>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>`);
+            forecastFiveDays.append(fiveDaysCard);
+          }
         });
     });
 });
