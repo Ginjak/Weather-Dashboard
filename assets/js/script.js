@@ -30,23 +30,30 @@ function addItem() {
   }
 }
 addItem();
+
 searchBtn.on("click", (event) => {
   event.preventDefault();
   forcastToday.empty();
   forecastFiveDays.empty();
   addItem();
-  var queryUrlCityCordinates = `http://api.openweathermap.org/geo/1.0/direct?q=${searchInput.val()}&limit=5&appid=3c4f418d697258b26a8f47e2024d5b99`;
+  fetchFunction(searchInput.val());
+  searchInput.val("");
+});
 
+$("#history").on("click", ".list-group-item", function () {
+  fetchFunction($(this).text());
+});
+
+var fetchFunction = function (city) {
+  var queryUrlCityCordinates = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=3c4f418d697258b26a8f47e2024d5b99`;
+  console.log(city);
   fetch(queryUrlCityCordinates)
     .then(function (resp) {
       return resp.json();
     })
     .then(function (data) {
-      console.log(data);
       latitude = data[0].lat.toFixed(4);
       longitude = data[0].lon.toFixed(4);
-      console.log(latitude);
-      console.log(longitude);
 
       var queryURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&&lon=${longitude}&appid=3c4f418d697258b26a8f47e2024d5b99`;
 
@@ -55,12 +62,11 @@ searchBtn.on("click", (event) => {
           return resp.json();
         })
         .then((data) => {
-          console.log(data);
-
+          forcastToday.empty();
+          forecastFiveDays.empty();
           var forcastHeading = $(
             `<h2>${
-              searchInput.val().charAt(0).toUpperCase() +
-              searchInput.val().slice(1)
+              city.charAt(0).toUpperCase() + city.slice(1)
             } ${dayjs().format(
               "(DD/MM/YYYY)"
             )} <img src="http://openweathermap.org/img/w/${
@@ -111,5 +117,4 @@ searchBtn.on("click", (event) => {
           }
         });
     });
-  searchInput.val("");
-});
+};
