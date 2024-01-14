@@ -4,40 +4,37 @@ var searchBtn = $("#search-button");
 var forcastToday = $("#today");
 var forecastFiveDays = $("#forecast");
 var historySection = $("#history");
-var searchHistoryArr = [];
 var latitude = "";
 var longitude = "";
-// for (var v = 0; v < 1; v++) {
-//   var test = ["a", "A", "b", "b", "cc", "c", "c"];
-//   var test3 = [...new Set(test)].map(
-//     (item) => item.charAt(0).toUpperCase() + item.slice(1)
-//   );
 
-//   console.log(test3);
-// }
+function addItem() {
+  // Retrieve existing array from local storage
+  var searchHistory = JSON.parse(localStorage.getItem("Search History")) || [];
 
+  // Add the new input value to the array
+  if (searchInput.val() !== "") {
+    searchHistory.push(searchInput.val());
+  }
+  // Update local storage with the modified array
+  localStorage.setItem("Search History", JSON.stringify(searchHistory));
+  var historyArrNoDuplicates = [...new Set(searchHistory)].map(
+    (item) => item.charAt(0).toUpperCase() + item.slice(1)
+  );
+  historySection.empty();
+  console.log(historyArrNoDuplicates);
+  for (var i = 0; i < historyArrNoDuplicates.length; i++) {
+    var searchHistoryItem = $(
+      `<li class="list-group-item">${historyArrNoDuplicates[i]}</li>} `
+    );
+    historySection.append(searchHistoryItem);
+  }
+}
+addItem();
 searchBtn.on("click", (event) => {
   event.preventDefault();
   forcastToday.empty();
   forecastFiveDays.empty();
-  searchHistoryArr.push(searchInput.val());
-
-  var historyArrToLs = JSON.stringify(searchHistoryArr);
-  localStorage.setItem("city", historyArrToLs);
-
-  var historyObjFromLs = localStorage.getItem("city");
-  var historyArrFromLs = JSON.parse(historyObjFromLs);
-  var historyArrNoDuplicates = [...new Set(historyArrFromLs)].map(
-    (item) => item.charAt(0).toUpperCase() + item.slice(1)
-  );
-
-  for (var j = 0; j < 10; j++) {
-    var historyItem = $(
-      `<li class="list-group-item">${historyArrNoDuplicates[j]}</li>`
-    );
-    historySection.append(historyItem);
-  }
-
+  addItem();
   var queryUrlCityCordinates = `http://api.openweathermap.org/geo/1.0/direct?q=${searchInput.val()}&limit=5&appid=3c4f418d697258b26a8f47e2024d5b99`;
 
   fetch(queryUrlCityCordinates)
@@ -114,4 +111,5 @@ searchBtn.on("click", (event) => {
           }
         });
     });
+  searchInput.val("");
 });
