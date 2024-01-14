@@ -13,21 +13,36 @@ function addItem() {
 
   // Add the new input value to the array
   if (searchInput.val() !== "") {
-    searchHistory.push(searchInput.val());
+    // Convert input to lowercase, capitalize the first letter
+    var newInput = searchInput.val().toLowerCase();
+    newInput = newInput.charAt(0).toUpperCase() + newInput.slice(1);
+
+    // Check for duplicates
+    var index = searchHistory.indexOf(newInput);
+    if (index !== -1) {
+      // Remove the first occurrence of the duplicate entry
+      searchHistory.splice(index, 1);
+    }
+
+    // Add the new entry
+    searchHistory.push(newInput);
   }
+
   // Update local storage with the modified array
   localStorage.setItem("Search History", JSON.stringify(searchHistory));
-  var historyArrNoDuplicates = [...new Set(searchHistory)].map(
-    (item) => item.charAt(0).toUpperCase() + item.slice(1)
-  );
+
+  var historyArrNoDuplicates = searchHistory.slice(-4); // Limit to a maximum of 4
+
   historySection.empty();
-  console.log(historyArrNoDuplicates);
+
   for (var i = 0; i < historyArrNoDuplicates.length; i++) {
     var searchHistoryItem = $(
-      `<li class="list-group-item">${historyArrNoDuplicates[i]}</li>} `
+      `<li class="list-group-item">${historyArrNoDuplicates[i]}</li>`
     );
-    historySection.append(searchHistoryItem);
+    historySection.prepend(searchHistoryItem);
   }
+
+  console.log(historyArrNoDuplicates);
 }
 addItem();
 
