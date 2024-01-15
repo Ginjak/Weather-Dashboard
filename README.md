@@ -25,3 +25,13 @@ The Weather Dashboard is a web application that provides users with up-to-date w
 4. View the current weather conditions and a 5-day forecast.
 5. Access previous search history for quick reference.
 6. Clear search history with the "Clear history" button.
+
+![](/assets/images/printscreen.gif)
+
+## Credits
+
+n/a
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE)
