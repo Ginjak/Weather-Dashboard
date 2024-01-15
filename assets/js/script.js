@@ -99,7 +99,7 @@ var fetchFunction = function (city) {
                 "(DD/MM/YYYY)"
               )} <img src="http://openweathermap.org/img/w/${
                 data.list[0].weather[0].icon
-              }.png"></h2>`
+              }.png alt="weather-icon""></h2>`
             );
             // Temperature
             var forcastTemp = $(
@@ -137,7 +137,7 @@ var fetchFunction = function (city) {
               .format("DD/MM/YYYY")}</h6>
               <img src="http://openweathermap.org/img/w/${
                 data.list[i * 8 - 1].weather[0].icon
-              }.png">
+              }.png alt="weather-icon" ">
             <p class="card-text">Temp: ${(
               data.list[i * 8 - 1].main.temp - 273.15
             ).toFixed(2)} &deg;C</p>
