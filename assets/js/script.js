@@ -12,7 +12,7 @@ function addItem() {
   var searchHistory = JSON.parse(localStorage.getItem("Search History")) || [];
 
   // Add the new input value to the array
-  if (searchInput.val() !== "") {
+  if (searchInput.val() !== "" && $("#error-message").text("")) {
     // Convert input to lowercase, capitalize the first letter
     var newInput = searchInput.val().toLowerCase();
     newInput = newInput.charAt(0).toUpperCase() + newInput.slice(1);
@@ -25,6 +25,7 @@ function addItem() {
     }
 
     // Add the new entry
+
     searchHistory.push(newInput);
   }
 
@@ -41,8 +42,14 @@ function addItem() {
     );
     historySection.prepend(searchHistoryItem);
   }
-
-  console.log(historyArrNoDuplicates);
+  if ($("#btn-clear").length === 0 && historyArrNoDuplicates.length > 0) {
+    $("#aside-column").append(
+      $(
+        `<div class="d-grid"><button class="btn btn-success mt-3" id="btn-clear">Clear history</button></div>`
+      )
+    );
+    console.log("Button created");
+  }
 }
 addItem();
 
@@ -53,6 +60,16 @@ searchBtn.on("click", (event) => {
   fetchFunction(searchInput.val());
   addItem();
   searchInput.val("");
+});
+
+$("#aside-column").on("click", "#btn-clear", () => {
+  localStorage.clear();
+  forcastToday.empty();
+  forecastFiveDays.empty();
+  addItem();
+  $("#btn-clear").remove();
+
+  console.log("clear history");
 });
 
 $("#history").on("click", ".list-group-item", function () {
@@ -72,6 +89,7 @@ var fetchFunction = function (city) {
         $("#error-message").empty().append(errorMessage);
       } else {
         $("#error-message").empty();
+
         latitude = data[0].lat.toFixed(4);
         longitude = data[0].lon.toFixed(4);
 
