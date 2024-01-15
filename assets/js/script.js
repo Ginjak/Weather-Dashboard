@@ -59,7 +59,7 @@ addItem();
 // Function to retrieve longititude andlatitude from search input value (must be City), retrieve forecast data depeneding on a city
 var fetchFunction = function (city) {
   // Initial query with search input value (City)
-  var queryUrlCityCordinates = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=3c4f418d697258b26a8f47e2024d5b99`;
+  var queryUrlCityCordinates = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=3c4f418d697258b26a8f47e2024d5b99`;
 
   // Data fetch method
   fetch(queryUrlCityCordinates)
