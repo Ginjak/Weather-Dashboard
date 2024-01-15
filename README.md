@@ -19,4 +19,9 @@ The Weather Dashboard is a web application that provides users with up-to-date w
 
 ## Usage
 
-1. [Open Weather Dashboard](https://ginjak.github.io/Work-Day-Scheduler/)
+1. [Open Weather Dashboard](https://ginjak.github.io/Weather-Dashboard/)
+2. Enter the desired city in the search input field.
+3. Click the "Search" button to retrieve weather information.
+4. View the current weather conditions and a 5-day forecast.
+5. Access previous search history for quick reference.
+6. Clear search history with the "Clear history" button.
