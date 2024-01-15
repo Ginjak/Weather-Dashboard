@@ -50,8 +50,8 @@ searchBtn.on("click", (event) => {
   event.preventDefault();
   forcastToday.empty();
   forecastFiveDays.empty();
-  addItem();
   fetchFunction(searchInput.val());
+  addItem();
   searchInput.val("");
 });
 
@@ -61,54 +61,59 @@ $("#history").on("click", ".list-group-item", function () {
 
 var fetchFunction = function (city) {
   var queryUrlCityCordinates = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=3c4f418d697258b26a8f47e2024d5b99`;
-  console.log(city);
+
   fetch(queryUrlCityCordinates)
     .then(function (resp) {
       return resp.json();
     })
     .then(function (data) {
-      latitude = data[0].lat.toFixed(4);
-      longitude = data[0].lon.toFixed(4);
+      if (!data || data.length === 0 || !data[0].lat || !data[0].lon) {
+        var errorMessage = $(`<p>City not found</p>`);
+        $("#error-message").empty().append(errorMessage);
+      } else {
+        $("#error-message").empty();
+        latitude = data[0].lat.toFixed(4);
+        longitude = data[0].lon.toFixed(4);
 
-      var queryURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&&lon=${longitude}&appid=3c4f418d697258b26a8f47e2024d5b99`;
+        var queryURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&&lon=${longitude}&appid=3c4f418d697258b26a8f47e2024d5b99`;
 
-      fetch(queryURL)
-        .then((resp) => {
-          return resp.json();
-        })
-        .then((data) => {
-          forcastToday.empty();
-          forecastFiveDays.empty();
-          var forcastHeading = $(
-            `<h2>${
-              city.charAt(0).toUpperCase() + city.slice(1)
-            } ${dayjs().format(
-              "(DD/MM/YYYY)"
-            )} <img src="http://openweathermap.org/img/w/${
-              data.list[0].weather[0].icon
-            }.png"></h2>`
-          );
-          var forcastTemp = $(
-            `<p>Temp: ${(data.list[0].main.temp - 273.15).toFixed(
-              2
-            )} &deg;C</p>`
-          );
-          var forcastWind = $(`<p>Wind: ${data.list[0].wind.speed} KPH</p>`);
-          var forcastHumidity = $(
-            `<p>Humidity: ${data.list[0].main.humidity}%</p>`
-          );
+        fetch(queryURL)
+          .then((resp) => {
+            return resp.json();
+          })
+          .then((data) => {
+            forcastToday.empty();
+            forecastFiveDays.empty();
+            var forcastHeading = $(
+              `<h2>${
+                city.charAt(0).toUpperCase() + city.slice(1)
+              } ${dayjs().format(
+                "(DD/MM/YYYY)"
+              )} <img src="http://openweathermap.org/img/w/${
+                data.list[0].weather[0].icon
+              }.png"></h2>`
+            );
+            var forcastTemp = $(
+              `<p>Temp: ${(data.list[0].main.temp - 273.15).toFixed(
+                2
+              )} &deg;C</p>`
+            );
+            var forcastWind = $(`<p>Wind: ${data.list[0].wind.speed} KPH</p>`);
+            var forcastHumidity = $(
+              `<p>Humidity: ${data.list[0].main.humidity}%</p>`
+            );
 
-          forcastToday.append(
-            forcastHeading,
-            forcastTemp,
-            forcastWind,
-            forcastHumidity
-          );
+            forcastToday.append(
+              forcastHeading,
+              forcastTemp,
+              forcastWind,
+              forcastHumidity
+            );
 
-          var fiveDaysHeader = $(`<h4>5-Day Forecast</h4>`);
-          forecastFiveDays.append(fiveDaysHeader);
-          for (var i = 1; i < 6; i++) {
-            var fiveDaysCard = $(`<div class="card col-2">
+            var fiveDaysHeader = $(`<h4>5-Day Forecast</h4>`);
+            forecastFiveDays.append(fiveDaysHeader);
+            for (var i = 1; i < 6; i++) {
+              var fiveDaysCard = $(`<div class="card col-2">
           <div class="card-body">
             <h6 class="card-title">${dayjs()
               .add(i - 1 + 1, "day")
@@ -128,8 +133,12 @@ var fetchFunction = function (city) {
           </div>
         </div>`);
 
-            forecastFiveDays.append(fiveDaysCard);
-          }
-        });
+              forecastFiveDays.append(fiveDaysCard);
+            }
+          });
+      }
+    })
+    .catch((error) => {
+      // console.log(`Error: ${error.message}`);
     });
 };
