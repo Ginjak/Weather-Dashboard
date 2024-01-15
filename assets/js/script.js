@@ -49,7 +49,7 @@ function addItem() {
   if ($("#btn-clear").length === 0 && historyArrNoDuplicates.length > 0) {
     $("#aside-column").append(
       $(
-        `<div class="d-grid"><button class="btn btn-success mt-3" id="btn-clear">Clear history</button></div>`
+        `<div class="d-grid"><button class="btn btn-secondary text-uppercase fw-medium mt-3" id="btn-clear">Clear history</button></div>`
       )
     );
   }
@@ -69,7 +69,7 @@ var fetchFunction = function (city) {
     .then(function (data) {
       // If city without results is entered error message will show up
       if (!data || data.length === 0 || !data[0].lat || !data[0].lon) {
-        var errorMessage = $(`<p>City not found</p>`);
+        var errorMessage = $(`<p class="px-2 text-danger">City not found</p>`);
         $("#error-message").empty().append(errorMessage);
         // if no error following code will be executed
       } else {
@@ -93,7 +93,7 @@ var fetchFunction = function (city) {
             // Create elemenets dynamically from API data
             // Heading with City, date (using dayjs), forecast weather icon
             var forcastHeading = $(
-              `<h2>${
+              `<h2 class="fs-4 px-4 pt-4">${
                 city.charAt(0).toUpperCase() + city.slice(1)
               } ${dayjs().format(
                 "(DD/MM/YYYY)"
@@ -103,15 +103,17 @@ var fetchFunction = function (city) {
             );
             // Temperature
             var forcastTemp = $(
-              `<p>Temp: ${(data.list[0].main.temp - 273.15).toFixed(
-                2
-              )} &deg;C</p>`
+              `<p class="px-4">Temp: ${(
+                data.list[0].main.temp - 273.15
+              ).toFixed(2)} &deg;C</p>`
             );
             // Wind speed
-            var forcastWind = $(`<p>Wind: ${data.list[0].wind.speed} KPH</p>`);
+            var forcastWind = $(
+              `<p class="px-4">Wind: ${data.list[0].wind.speed} KPH</p>`
+            );
             // Humidity
             var forcastHumidity = $(
-              `<p>Humidity: ${data.list[0].main.humidity}%</p>`
+              `<p class="px-4 pb-4 mb-0">Humidity: ${data.list[0].main.humidity}%</p>`
             );
             // Add/append created elements to today forecast div
             forcastToday.append(
@@ -122,13 +124,14 @@ var fetchFunction = function (city) {
             );
             // Five day forecast data and elements
             // Heading for section
-            var fiveDaysHeader = $(`<h4>5-Day Forecast</h4>`);
+            var fiveDaysHeader = $(`<h4 class="px-4 mb-3">5-Day Forecast</h4>`);
             forecastFiveDays.append(fiveDaysHeader);
             // Adding 5 cards with forecast data
             for (var i = 1; i < 6; i++) {
               // Card
-              var fiveDaysCard = $(`<div class="card col-2">
-          <div class="card-body">
+              var fiveDaysCard =
+                $(`<div class="card col-md-5 col-xl-2 border-0">
+          <div class="card-body px-2">
             <h6 class="card-title">${dayjs()
               .add(i - 1 + 1, "day")
               .format("DD/MM/YYYY")}</h6>

@@ -19,7 +19,7 @@
 
   <body>
     <header
-      class="container-fluid text-center text-white bg-dark p-2 weather-header"
+      class="container-fluid text-center text-white p-2 py-4 weather-header"
     >
       <h1>Weather Dashboard</h1>
     </header>
@@ -27,8 +27,8 @@
     <!-- max-width for ultra wide resolutions -->
     <div class="container-fluid" style="max-width: 1400px">
       <div class="row">
-        <aside class="col-lg-3 pb-3" id="aside-column">
-          <h2 id="form-heading" class="mt-1 h3 form-label">
+        <aside class="col-lg-3 my-3" id="aside-column">
+          <h2 id="form-heading" class="my-3 h3 form-label text-uppercase fs-4">
             Search for a City:
           </h2>
           <form id="search-form" class="form">
@@ -38,7 +38,7 @@
                   class="form-input weather-search mb-3"
                   type="text"
                   id="search-input"
-                  placeholder="London"
+                  placeholder="Enter City"
                   aria-labelledby="form-heading"
                   aria-controls="today forecast"
                 />
@@ -47,7 +47,7 @@
                 <div class="input-group-append d-grid">
                   <button
                     type="submit"
-                    class="btn btn-primary search-button"
+                    class="btn btn-warning text-uppercase fw-bold search-button"
                     id="search-button"
                     aria-label="submit search"
                   >
@@ -70,7 +70,7 @@
           ></section>
           <section
             id="forecast"
-            class="row d-flex justify-content-between mt-3"
+            class="row g-4 d-flex flex-wrap justify-content-evenly justify-content-xl-between mt-3 mx-0"
             role="region"
             aria-live="polite"
           ></section>
